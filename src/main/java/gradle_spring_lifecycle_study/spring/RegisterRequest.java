@@ -1,4 +1,4 @@
-package gradle_spring_lifecycle_study.di;
+package gradle_spring_lifecycle_study.spring;
 
 public class RegisterRequest {
 

@@ -8,15 +8,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import gradle_spring_lifecycle_study.config.AppCtx;
-import gradle_spring_lifecycle_study.di.ChangePasswordService;
-import gradle_spring_lifecycle_study.di.DuplicateMemberException;
-import gradle_spring_lifecycle_study.di.MemberInfoPrinter;
-import gradle_spring_lifecycle_study.di.MemberListPrinter;
-import gradle_spring_lifecycle_study.di.MemberNotFoundException;
-import gradle_spring_lifecycle_study.di.MemberRegisterService;
-import gradle_spring_lifecycle_study.di.RegisterRequest;
-import gradle_spring_lifecycle_study.di.VersionPrinter;
-import gradle_spring_lifecycle_study.di.WrongIdPasswordException;
+import gradle_spring_lifecycle_study.spring.ChangePasswordService;
+import gradle_spring_lifecycle_study.spring.DuplicateMemberException;
+import gradle_spring_lifecycle_study.spring.MemberInfoPrinter;
+import gradle_spring_lifecycle_study.spring.MemberListPrinter;
+import gradle_spring_lifecycle_study.spring.MemberNotFoundException;
+import gradle_spring_lifecycle_study.spring.MemberRegisterService;
+import gradle_spring_lifecycle_study.spring.RegisterRequest;
+import gradle_spring_lifecycle_study.spring.VersionPrinter;
+import gradle_spring_lifecycle_study.spring.WrongIdPasswordException;
 
 public class MainForSpring {
 	
@@ -47,13 +47,13 @@ public class MainForSpring {
 			}else if(command.startsWith("info ")) {
 				processInfoCommand(command.split(" "));
 				continue;
-			}else if(command.equals("version ")) {
+			}else if(command.equals("version")) {
 				processVersionCommand();
 				continue;
 			}
 		}
-
 		printHelp();
+
 	}private static void processVersionCommand() {
 		VersionPrinter versionPrinter = ctx.getBean("versionPrinter", VersionPrinter.class);
 		versionPrinter.print();
@@ -63,14 +63,14 @@ private static void processInfoCommand(String[] arg) {
 		printHelp();
 		return;
 	}
-	MemberInfoPrinter infoPrinter = ctx.getBean("infoPrinter", MemberInfoPrinter.class);
+	MemberInfoPrinter infoPrinter = ctx.getBean(MemberInfoPrinter.class);
 	infoPrinter.printMemberInfo(arg[1]);
 		
 	}
 
 
 	private static void processListCommand() {
-		MemberListPrinter listPrinter = ctx.getBean("listPrinter", MemberListPrinter.class);
+		MemberListPrinter listPrinter = ctx.getBean(MemberListPrinter.class);
 		listPrinter.printAll();
 	}
 
@@ -89,7 +89,7 @@ private static void processInfoCommand(String[] arg) {
 			printHelp();
 			return;
 		}
-		MemberRegisterService regSvc = ctx.getBean("memberRegSvc", MemberRegisterService.class);
+		MemberRegisterService regSvc = ctx.getBean(MemberRegisterService.class);
 		RegisterRequest req = new RegisterRequest();
 		req.setEmail(arg[1]);
 		req.setName(arg[2]);
@@ -114,7 +114,7 @@ private static void processInfoCommand(String[] arg) {
 			printHelp();
 			return;
 		}
-		ChangePasswordService changePwdSvc= ctx.getBean("changePwdSvc", ChangePasswordService.class);
+		ChangePasswordService changePwdSvc= ctx.getBean(ChangePasswordService.class);
 		try {
 			changePwdSvc.changePassword(arg[1], arg[2], arg[3]);
 			System.out.println("암호를 변경했습니다.");

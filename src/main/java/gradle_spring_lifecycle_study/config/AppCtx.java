@@ -1,68 +1,26 @@
 package gradle_spring_lifecycle_study.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import gradle_spring_lifecycle_study.di.ChangePasswordService;
-import gradle_spring_lifecycle_study.di.MemberDao;
-import gradle_spring_lifecycle_study.di.MemberInfoPrinter;
-import gradle_spring_lifecycle_study.di.MemberListPrinter;
-import gradle_spring_lifecycle_study.di.MemberPrinter;
-import gradle_spring_lifecycle_study.di.MemberRegisterService;
-import gradle_spring_lifecycle_study.di.VersionPrinter;
+import gradle_spring_lifecycle_study.spring.Client;
+import gradle_spring_lifecycle_study.spring.Client2;
 
 @Configuration			//해당 클래스를 스프링 설정 클래스로 지정한다.
+@ComponentScan(basePackages = {"gradle_spring_lifecycle_study.spring"})
 public class AppCtx {
 	
-	@Bean
-	public MemberDao memberDao() {
-		return new MemberDao();
-	}
+//	@Bean
+//	public Client client() {
+//		Client client = new Client();
+//		client.setHost("host");
+//		return client;
+//	}
 	
-	@Bean
-	public MemberRegisterService memberRegSvc() {
-		return new MemberRegisterService(memberDao());
-	}
 	
-	@Bean
-	public ChangePasswordService changePwdSvc() {
-		ChangePasswordService pwdSvc = new ChangePasswordService();
-		pwdSvc.setMemberDao(memberDao());
-		return pwdSvc;
+	@Bean(initMethod = "connect", destroyMethod = "close")
+	public Client2 client2() {
+		return new Client2();
 	}
-	
-	@Bean
-	public MemberPrinter memberPrinter() {
-		return new MemberPrinter();
-	}
-	
-	@Bean
-	public MemberListPrinter listPrinter() {
-		return new MemberListPrinter(memberDao(), memberPrinter());
-	}
-	
-	@Bean
-	public MemberInfoPrinter memberInfoPrinter() {
-		MemberInfoPrinter infoPrinter = new MemberInfoPrinter();
-		infoPrinter.setMemberDao(memberDao());
-		infoPrinter.setPrinter(memberPrinter());
-		return infoPrinter;
-	}
-	
-	@Bean
-	public VersionPrinter versionPrinter() {
-		VersionPrinter versionPrinter = new VersionPrinter();
-		versionPrinter.setMajorVersion(5);
-		versionPrinter.setMinorVersion(0);
-		return versionPrinter;
-	}
-
-	@Bean
-	  public MemberInfoPrinter infoPrinter() {
-	      MemberInfoPrinter infoPrinter = new MemberInfoPrinter();
-	      infoPrinter.setMemberDao(memberDao());
-	      infoPrinter.setPrinter(memberPrinter());
-	      return infoPrinter;
-	}
-	
 }

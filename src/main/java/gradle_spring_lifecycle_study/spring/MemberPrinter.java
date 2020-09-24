@@ -1,5 +1,8 @@
-package gradle_spring_lifecycle_study.di;
+package gradle_spring_lifecycle_study.spring;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MemberPrinter {
 	
 	public void print(Member member) {
